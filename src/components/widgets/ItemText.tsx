@@ -170,7 +170,7 @@ const ItemText: FC<{
 	inDialog?: boolean;
 	hideRemoveButton?: boolean;
 }> = ({ item, handleItemPropChange, inDialog, hideRemoveButton }) => {
-	const { removeItem, fonts, disableTextColors, textColors, getPrintingMethodsRestrictions, getSanitationText } =
+	const { removeItem, fonts, getPrintingMethodsRestrictions, getSanitationText } =
 		useZakeke();
 
 	const constraints = item.constraints;
@@ -364,7 +364,7 @@ const ItemText: FC<{
 						)}
 				</TextToolsContainer>
 
-				{(!disableTextColors || !(disableTextColors && textColors.length === 1)) &&
+				{/* {(!disableTextColors || !(disableTextColors && textColors.length === 1)) &&
 					!!item.constraints?.canChangeFontColor && (
 						<FormControl label={T._('Color', 'Composer')}>
 							<ColorsContainer>
@@ -414,7 +414,7 @@ const ItemText: FC<{
 								)}
 							</ColorsContainer>
 						</FormControl>
-					)}
+					)} */}
 			</ItemTextContainer>
 		);
 	else return null;

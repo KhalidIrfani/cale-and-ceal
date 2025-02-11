@@ -22,13 +22,14 @@ const AddTextDialog: FC<{ onClose: () => void; onConfirm: (item: EditTextItem) =
 	onClose,
 	onConfirm
 }) => {
-	const { fonts, defaultColor } = useZakeke();
+	// const { fonts, defaultColor } = useZakeke();
+	const { fonts } = useZakeke();
 
 	const [item, setItem] = useState<EditTextItem>({
 		guid: '',
 		name: '',
 		text: T._('Text', 'Composer'),
-		fillColor: defaultColor,
+		fillColor: 'defaultColor',
 		fontFamily: fonts[0].name,
 		fontSize: 48,
 		fontWeight: 'normal normal',

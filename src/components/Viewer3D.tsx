@@ -104,8 +104,9 @@ const Viewer3D = () => {
 	const handleArClick = async (arOnFlyUrl: string) => {
 		if (IS_ANDROID || IS_IOS) {
 			setIsLoading(true);
-			const link = new URL(arOnFlyUrl, window.location.href);
-			const url = await getMobileArUrl(link.href);
+			const link = new URL(arOnFlyUrl, window.location.origin);
+			const url = await getMobileArUrl();
+			// const url = await getMobileArUrl(link.href);
 			setIsLoading(false);
 			if (url)
 				if (IS_IOS) {
