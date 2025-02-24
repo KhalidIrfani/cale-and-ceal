@@ -41,17 +41,16 @@ const PriceInfoTextContainer = styled.div`
 `;
 
 const NewInputTextVertical = styled.input`
-    height: 60px;
-	border-radius: 5px;
-	border: 1px solid #C7C7C7;
-	font-family: Poppins;
-	color: #C7C7C7;
-	background: white;
-	width: 370px;
-    font-size: 20px;
-	position: relative;
-    // bottom: -1em;
-	left: 0em;
+    width: 90%;
+    height: 36px;
+    border-radius: 5px;
+    border: 1px solid #C7C7C7;
+    font-family: Poppins;
+    color: #C7C7C7;
+    background: white;
+    font-size: 16px;
+    position: relative;
+    left: 0em;
 	&::placeholder {
 		font-size: 15px;
 		font-family: Poppins;
@@ -530,21 +529,14 @@ const MobileMenu = () => {
 							<div className="modal-content" onClick={(e) => e.stopPropagation()}>
 								<ZipperStyleTextLabel
 									className='ZipperStyleTextLabel'
-									style={{
-										top: '50px',
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center',
-										flexDirection: 'column'
-									}}
 								>
 									<div className="zipper-custom-input-title">ZIPPER CUSTOM</div>
 									<div>
 										<div
 											style={{
 												position: 'absolute',
-												top: '4.5em',
-												right: '10px',
+												top: '2.5em',
+												right: '30px',
 												padding: '5px',
 												zIndex: '2'
 											}}
@@ -564,11 +556,11 @@ const MobileMenu = () => {
 											value={customTextMessage}
 											onChange={(e) => {
 												// setCustomTextMessage(e.target.value)
-												if (e.target.value.length < 6)
+												if (e.target.value.length <= 6)
 													setItemTextNew(e.target.value);
 											}}
 										/>
-										<div className="zipper-custom-sub-input-title">(Max 5 character)</div>
+										<div className="zipper-custom-sub-input-title">(Max 6 character)</div>
 										<button onClick={() => setIsZipperPopupOpen(false)} className="close-button">
 											Close
 										</button>

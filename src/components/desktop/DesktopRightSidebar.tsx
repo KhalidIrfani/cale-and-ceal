@@ -728,7 +728,7 @@ const DesktopRightSidebar = () => {
 																	<div
 																		style={{
 																			position: 'absolute',
-																			top: '3em',
+																			top: '3.7em',
 																			right: '10px',
 																			padding: '5px',
 																			zIndex: '2'
@@ -750,11 +750,11 @@ const DesktopRightSidebar = () => {
 																		value={customTextMessage}
 																		onChange={(e) => {
 																			// setCustomTextMessage(e.target.value)
-																			if (e.target.value.length < 6)
+																			if (e.target.value.length <= 6)
 																				setItemTextNew(e.target.value);
 																		}}
 																	/>
-																	<div className="zipper-custom-sub-input-title">(Max 5 character)</div>
+																	<div className="zipper-custom-sub-input-title">(Max 6 character)</div>
 																	
 																</div>
 															</ZipperStyleTextLabel>

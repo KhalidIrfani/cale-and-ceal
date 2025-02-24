@@ -391,7 +391,7 @@ const FooterMobile = () => {
 					<div
 						style={{
 							display: 'flex',
-							gap: "20px",
+							gap: "15px",
 							alignItems: "center",
 							padding: "0 3px 3px 3px",
 
@@ -404,9 +404,8 @@ const FooterMobile = () => {
 							style={{
 								display: 'flex',
 								justifyContent: 'center',
-								alignItems: 'center',
-								padding: '8px 20px',
-								fontSize:'15px',
+								padding: '9px 23px',
+								fontSize: '18px',
 								backgroundColor: '#000',
 								color: 'white',
 							}}
@@ -509,19 +508,21 @@ const FooterMobile = () => {
 							{isQuoteLoading && <TailSpin color='#FFFFFF' height='25px' />}
 						</FooterMobileIcon>
 					)} */}
-				</FooterMobileContainer>
+				</FooterMobileContainer >
 			)}
 
-			{isOutOfStockTooltipVisible && (
-				<Dropdown>
-					<OutOfStockTooltipContent>
-						{T._(
-							'The configuration you have done is out-of-stock, please select different options to purchase this product.',
-							'Composer'
-						)}
-					</OutOfStockTooltipContent>
-				</Dropdown>
-			)}
+			{
+				isOutOfStockTooltipVisible && (
+					<Dropdown>
+						<OutOfStockTooltipContent>
+							{T._(
+								'The configuration you have done is out-of-stock, please select different options to purchase this product.',
+								'Composer'
+							)}
+						</OutOfStockTooltipContent>
+					</Dropdown>
+				)
+			}
 		</>
 	);
 };

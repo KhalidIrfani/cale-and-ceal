@@ -56,20 +56,19 @@ canvas {
 
 .modal-content {
 	background: white;
-	padding: 20px;
 	border-radius: 10px;
-	position: relative;
-	width: 99%;
-	max-width: 400px;
+    position: relative;
+    width: 65%;
+    max-width: 400px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .close-button {
-	margin-top: 10px;
-	background: red;
-	color: white;
-	border: none;
-	padding: 8px 12px;
-	cursor: pointer;
-	border-radius: 5px;
+	margin: 10px 0px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
 }

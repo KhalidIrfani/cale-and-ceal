@@ -102,16 +102,16 @@
 
 .zipper-custom-input-title {
   width: 100%;
-  font: 'poppins';
+  font-family: 'poppins';
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 10px;
+  padding: 8px;
   color: #292D32;
 }
 
 .zipper-custom-sub-input-title {
-  font: 'poppins';
-  font-size: 14px;
+  font-family: 'poppins';
+  font-size: 16px;
   font-weight: 400;
   margin-top: 8px;
   color: #292D32;
@@ -125,5 +125,23 @@
 
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 786) {
+  .zipper-custom-input-title {
+    width: 100%;
+    font-family: 'poppins';
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px;
+    color: #292D32;
+  }
+  .zipper-custom-sub-input-title {
+    font-family: 'poppins';
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 8px;
+    color: #292D32;
   }
 }
