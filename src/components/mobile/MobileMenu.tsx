@@ -109,6 +109,11 @@ const MobileMenu = () => {
 	const [isStartRegistering, setIsStartRegistering] = useState(false);
 	const [customTextMessage, setCustomTextMessage] = useState('' as string);
 	const [isZipperPopupOpen, setIsZipperPopupOpen] = useState(false);
+	const [zipperSelection, setZipperSelection] = useState<{
+		attributeName: string | null;
+		optionName: string | null;
+	}>({ attributeName: null, optionName: null });
+
 	const undoRegistering = useUndoRegister();
 	const undoRedoActions = useUndoRedoActions();
 
@@ -231,6 +236,15 @@ const MobileMenu = () => {
 		setIsTemplateGroupOpened(true);
 	};
 
+	const isCustomZipperPullsSelected =
+		((selectedOptionName?.name === 'Custom Zipper Pulls' || selectedOptionName?.name === 'Custom Zipper') &&
+			selectedAttribute?.name === 'Zipper Style') ||
+		((zipperSelection.optionName === 'Custom Zipper Pulls' || zipperSelection.optionName === 'Custom Zipper') &&
+			zipperSelection.attributeName === 'Zipper Style');
+
+
+	const isOpenJacketSelected = selectedOptionName?.name === 'Open Jacket';
+
 	const handleOptionSelection = (option: Option) => {
 		const undo = undoRegistering.startRegistering();
 		undoRedoActions.eraseRedoStack();
@@ -244,10 +258,28 @@ const MobileMenu = () => {
 		selectOption(option.id);
 		undoRegistering.endRegistering(undo);
 
+		if (
+			(option.name === 'Custom Zipper Pulls' || option.name === 'Custom Zipper') &&
+			selectedAttribute?.name === 'Zipper Style'
+		) {
+			setIsZipperPopupOpen(true);
+			setZipperSelection({
+				attributeName: selectedAttribute.name,
+				optionName: option.name
+			});
+		} else if (option.name === 'Open Jacket') {
+			// Clear zipper selection when Open Jacket is selected
+			setZipperSelection({ attributeName: null, optionName: null });
+		} else {
+			// Clear zipper selection for other options if needed
+			setZipperSelection({ attributeName: null, optionName: null });
+		}
+
 		try {
 			if ((window as any).algho) (window as any).algho.sendUserStopForm(true);
 		} catch (e) { }
 	};
+
 
 	const setTemplateByID = async (templateID: number) => await setTemplate(templateID);
 	// Initial template selection
@@ -380,31 +412,39 @@ const MobileMenu = () => {
 					scrollLeft={scrollLeft ?? 0}
 					onScrollChange={(value) => setScrollLeft(value)}
 				>
-					{actualGroups.map((group) => {
-						if (group)
-							return (
-								<MenuItem
-									key={group.guid}
-									group={true}
-									imageUrl={
-										group.imageUrl && group.imageUrl !== ''
-											? group.id === -3
-												? savedCompositionsIcon
-												: group.imageUrl
-											: group.id === -2
-												? textIcon
-												: star
-										// group.id === -3 ? savedCompositionsIcon : group.imageUrl ? group.imageUrl : star
-									}
-									label={group.name ? T._d(group.name) : T._('Customize', 'Composer')}
-									onClick={() => handleGroupSelection(group.id)}
-								></MenuItem>
-							);
-						else return null;
-					})}
+					{actualGroups
+						.filter((group) => {
+							// Logic for showing/hiding Custom Tag
+							const shouldHideCustomTag = isCustomZipperPullsSelected && !isOpenJacketSelected;
+							const shouldShowCustomTag = isOpenJacketSelected || (!isCustomZipperPullsSelected && group.name === 'Custom Tag');
+							if (group.name === 'Custom Tag') {
+								return shouldShowCustomTag;
+							}
+							return true; // Show all other groups regardless
+						})
+						.map((group) => {
+							if (group)
+								return (
+									<MenuItem
+										key={group.guid}
+										group={true}
+										imageUrl={
+											group.imageUrl && group.imageUrl !== ''
+												? group.id === -3
+													? savedCompositionsIcon
+													: group.imageUrl
+												: group.id === -2
+													? textIcon
+													: star
+										}
+										label={group.name ? T._d(group.name) : T._('Customize', 'Composer')}
+										onClick={() => handleGroupSelection(group.id)}
+									/>
+								);
+							else return null;
+						})}
 				</MobileItemsContainer>
 			)}
-
 			{/* <AttributesContainer > */}
 			{selectedGroup && selectedGroup.id === -2 && templates.length > 1 && (
 				<TemplatesContainer>
@@ -498,7 +538,7 @@ const MobileMenu = () => {
 													key={option.guid}
 													onClick={() => {
 														handleOptionSelection(option);
-														if (option.name === "Custom Zipper Pulls") {
+														if (option.name === "Custom Zipper Pulls" || option.name === "Custom Zipper") {
 															setIsZipperPopupOpen(true);
 														}
 													}}
@@ -527,15 +567,13 @@ const MobileMenu = () => {
 					{isZipperPopupOpen && (
 						<div className="modal-overlay" onClick={() => setIsZipperPopupOpen(false)}>
 							<div className="modal-content" onClick={(e) => e.stopPropagation()}>
-								<ZipperStyleTextLabel
-									className='ZipperStyleTextLabel'
-								>
+								<ZipperStyleTextLabel className="ZipperStyleTextLabel">
 									<div className="zipper-custom-input-title">ZIPPER CUSTOM</div>
 									<div>
 										<div
 											style={{
 												position: 'absolute',
-												top: '2.5em',
+												top: '2.7em',
 												right: '30px',
 												padding: '5px',
 												zIndex: '2'
@@ -545,22 +583,18 @@ const MobileMenu = () => {
 										</div>
 
 										<NewInputTextVertical
-											placeholder=' Enter label'
-											className={`input-box ${selectedOptionName?.name ===
-												'Custom Zipper Pulls' &&
-												selectedAttribute?.name.toLowerCase() ===
-												'zipper style'
-												? 'show'
-												: 'hide'
+											placeholder=" Enter label"
+											className={`input-box ${(selectedOptionName?.name === "Custom Zipper Pulls" || selectedOptionName?.name === "Custom Zipper") &&
+													selectedAttribute?.name.toLowerCase() === "zipper style"
+													? "show"
+													: "hide"
 												}`}
 											value={customTextMessage}
 											onChange={(e) => {
-												// setCustomTextMessage(e.target.value)
-												if (e.target.value.length <= 6)
-													setItemTextNew(e.target.value);
+												if (e.target.value.length < 6) setItemTextNew(e.target.value);
 											}}
 										/>
-										<div className="zipper-custom-sub-input-title">(Max 6 character)</div>
+										<div className="zipper-custom-sub-input-title">(Max 5 character)</div>
 										<button onClick={() => setIsZipperPopupOpen(false)} className="close-button">
 											Close
 										</button>

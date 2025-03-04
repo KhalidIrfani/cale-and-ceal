@@ -214,8 +214,8 @@ const DesktopRightSidebar = () => {
 	const currentTemplateGroups = selectedStep
 		? selectedStep.templateGroups
 		: selectedGroup
-		? selectedGroup.templateGroups
-		: [];
+			? selectedGroup.templateGroups
+			: [];
 
 	const currentItems = [...currentAttributes, ...currentTemplateGroups].sort(
 		(a, b) => a.displayOrder - b.displayOrder
@@ -554,49 +554,61 @@ const DesktopRightSidebar = () => {
 		text: customTextMessage
 	} as { text: string; fontFamily: string };
 
+
+	// Check if "Custom Zipper Pulls" is selected to hide the "Custom Tag" group
+	const isCustomZipperPullsSelected =
+		(selectedOptionName?.name === 'Custom Zipper Pulls' || selectedOptionName?.name === 'Custom Zipper') &&
+		selectedAttribute?.name.toLowerCase() === 'zipper style';
+
+
 	return (
 		<DesktopRightSidebarContainer>
 			{visibleClickType === 'Group' && (
 				<GroupsContainer>
 					{actualGroups &&
 						!(actualGroups.length === 1 && actualGroups[0].name.toLowerCase() === 'other') &&
-						actualGroups.map((group) => {
-							if (group)
-								return (
-									<GroupItem
-										key={group.guid}
-										className={'group-item' + (group.id === selectedGroupId ? ' selected' : '')}
-										onClick={() => {
-											handleGroupSelection(group.id);
-											setVisibleClickType('Option');
-										}}
-									>
-										<OptionSelectionDiv></OptionSelectionDiv>
-
-										<GroupNameTitle>
-											<>{group.name ? T._d(group.name) : T._('Customize', 'Composer')}</>
-										</GroupNameTitle>
-
-										<GroupIcon
-											loading='lazy'
-											// fetchpriority="low"
-											src={
-												group.imageUrl && group.imageUrl !== ''
-													? group.id === -3
-														? savedCompositionsIcon
-														: group.imageUrl
-													: group.id === -2
-													? textIcon
-													: star
-											}
-										/>
-										<GroupIconViewOptions className='GroupIconViewOptions'>
-											VIEW OPTIONS
-										</GroupIconViewOptions>
-									</GroupItem>
-								);
-							else return null;
-						})}
+						actualGroups
+							.filter((group) => {
+								// Hide the "Custom Tag" group when "Custom Zipper Pulls" is selected
+								if (isCustomZipperPullsSelected) {
+									return group.name !== 'Custom Tag';
+								}
+								return true; // Otherwise, include all groups
+							})
+							.map((group) => {
+								if (group)
+									return (
+										<GroupItem
+											key={group.guid}
+											className={'group-item' + (group.id === selectedGroupId ? ' selected' : '')}
+											onClick={() => {
+												handleGroupSelection(group.id);
+												setVisibleClickType('Option');
+											}}
+										>
+											<OptionSelectionDiv></OptionSelectionDiv>
+											<GroupNameTitle>
+												<>{group.name ? T._d(group.name) : T._('Customize', 'Composer')}</>
+											</GroupNameTitle>
+											<GroupIcon
+												loading='lazy'
+												src={
+													group.imageUrl && group.imageUrl !== ''
+														? group.id === -3
+															? savedCompositionsIcon
+															: group.imageUrl
+														: group.id === -2
+															? textIcon
+															: star
+												}
+											/>
+											<GroupIconViewOptions className='GroupIconViewOptions'>
+												VIEW OPTIONS
+											</GroupIconViewOptions>
+										</GroupItem>
+									);
+								else return null;
+							})}
 				</GroupsContainer>
 			)}
 			{visibleClickType === 'Option' && (
@@ -633,7 +645,7 @@ const DesktopRightSidebar = () => {
 										renderBottomCenterControls={() => <span />}
 										renderCenterRightControls={({ nextSlide, currentSlide, slideCount }) =>
 											currentSlide + (window.innerWidth <= 1600 ? 3 : 4) >
-											slideCount - 1 ? null : (
+												slideCount - 1 ? null : (
 												<SliderArrow arrowDirection='right' onClick={nextSlide}>
 													<AngleRightSolid />
 												</SliderArrow>
@@ -708,58 +720,47 @@ const DesktopRightSidebar = () => {
 																/>
 															))}
 												</Options>
-
-												{selectedOptionName?.name === 'Custom Zipper Pulls' &&
-													selectedAttribute?.name.toLowerCase() === 'zipper style' && (
-														<div>
-															<ZipperStyleTextLabel
-																className='ZipperStyleTextLabel'
-																style={{
-																	position: 'relative',
-																	top: '50px',
-																	display: 'flex',
-																	alignItems: 'center',
-																	justifyContent: 'center',
-																	flexDirection: 'column'
-																}}
-															>
-																<div className="zipper-custom-input-title">ZIPPER CUSTOM</div>
-																<div>
-																	<div
-																		style={{
-																			position: 'absolute',
-																			top: '3.7em',
-																			right: '10px',
-																			padding: '5px',
-																			zIndex: '2'
-																		}}
-																	>
-																		<Label />
-																	</div>
-
-																	<NewInputTextVertical
-																		placeholder=' Enter label'
-																		className={`input-box ${
-																			selectedOptionName?.name ===
-																				'Custom Zipper Pulls' &&
-																			selectedAttribute?.name.toLowerCase() ===
-																				'zipper style'
-																				? 'show'
-																				: 'hide'
-																		}`}
-																		value={customTextMessage}
-																		onChange={(e) => {
-																			// setCustomTextMessage(e.target.value)
-																			if (e.target.value.length <= 6)
-																				setItemTextNew(e.target.value);
-																		}}
-																	/>
-																	<div className="zipper-custom-sub-input-title">(Max 6 character)</div>
-																	
+												{isCustomZipperPullsSelected && (
+													<div>
+														<ZipperStyleTextLabel
+															className="ZipperStyleTextLabel"
+															style={{
+																position: 'relative',
+																top: '50px',
+																display: 'flex',
+																alignItems: 'center',
+																justifyContent: 'center',
+																flexDirection: 'column',
+															}}
+														>
+															<div className="zipper-custom-input-title">ZIPPER CUSTOM</div>
+															<div>
+																<div
+																	style={{
+																		position: 'absolute',
+																		top: '3.7em',
+																		right: '10px',
+																		padding: '5px',
+																		zIndex: 2, // Numeric value should not be in quotes
+																	}}
+																>
+																	<Label />
 																</div>
-															</ZipperStyleTextLabel>
-														</div>
-													)}
+
+																<NewInputTextVertical
+																	placeholder="label"
+																	className={`input-box ${isCustomZipperPullsSelected ? 'show' : 'hide'}`}
+																	value={customTextMessage}
+																	onChange={(e) => {
+																		if (e.target.value.length < 6) setItemTextNew(e.target.value);
+																	}}
+																/>
+																<div className="zipper-custom-sub-input-title">(Max 5 characters)</div>
+															</div>
+														</ZipperStyleTextLabel>
+													</div>
+												)}
+
 											</OptionsContainer>
 
 											<ApplyButton onClick={() => setVisibleClickType('Group')}>

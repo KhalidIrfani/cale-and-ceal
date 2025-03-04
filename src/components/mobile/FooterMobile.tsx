@@ -402,9 +402,10 @@ const FooterMobile = () => {
 						</FooterMobileIcon> */}
 						<button
 							style={{
+								textTransform: 'uppercase',
 								display: 'flex',
 								justifyContent: 'center',
-								padding: '9px 23px',
+								padding: '9px 25px',
 								fontSize: '18px',
 								backgroundColor: '#000',
 								color: 'white',

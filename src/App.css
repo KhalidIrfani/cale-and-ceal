@@ -128,11 +128,11 @@
   }
 }
 
-@media (max-width: 786) {
+@media (max-width: 786px) {
   .zipper-custom-input-title {
     width: 100%;
     font-family: 'poppins';
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     padding: 8px;
     color: #292D32;
