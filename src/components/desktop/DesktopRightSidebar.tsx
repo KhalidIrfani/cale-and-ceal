@@ -748,7 +748,7 @@ const DesktopRightSidebar = () => {
 																</div>
 
 																<NewInputTextVertical
-																	placeholder="label"
+																	placeholder="Custom Name"
 																	className={`input-box ${isCustomZipperPullsSelected ? 'show' : 'hide'}`}
 																	value={customTextMessage}
 																	onChange={(e) => {

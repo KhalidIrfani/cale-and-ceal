@@ -46,7 +46,7 @@ const NewInputTextVertical = styled.input`
     border-radius: 5px;
     border: 1px solid #C7C7C7;
     font-family: Poppins;
-    color: #C7C7C7;
+    color:rgb(28, 28, 28);
     background: white;
     font-size: 16px;
     position: relative;
@@ -583,7 +583,7 @@ const MobileMenu = () => {
 										</div>
 
 										<NewInputTextVertical
-											placeholder=" Enter label"
+											placeholder="Custom Name"
 											className={`input-box ${(selectedOptionName?.name === "Custom Zipper Pulls" || selectedOptionName?.name === "Custom Zipper") &&
 													selectedAttribute?.name.toLowerCase() === "zipper style"
 													? "show"
