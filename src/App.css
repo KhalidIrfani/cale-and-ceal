@@ -135,13 +135,13 @@
     font-size: 15px;
     font-weight: 600;
     padding: 8px;
-    color: #292D32;
+    color: white;
   }
   .zipper-custom-sub-input-title {
     font-family: 'poppins';
     font-size: 12px;
     font-weight: 400;
     margin-top: 8px;
-    color: #292D32;
+    color: white;
   }
 }
